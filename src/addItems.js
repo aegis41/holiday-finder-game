@@ -15,9 +15,13 @@ export function addItems(options = {}, scene) {
     // Merge provided options with defaults from gameConfig
     const config = { ...gameConfig.items, ...options };
 
-    const itemCount = config.defaultCount === -1 
-        ? Phaser.Math.Between(config.minCount, config.maxCount)
-        : config.defaultCount;
+    // use coordinates if provided, otherwise calculate item count
+    const fixedCoordinates = config.fixed || [];
+    const itemCount = fixedCoordinates.length > 0
+        ? fixedCoordinates.length
+        : (config.defaultCount === -1
+            ? Phaser.Math.Between(config.minCount, config.maxCount)
+            : config.defaultCount);
 
     gameState.remainingItems = itemCount; // Set remaining items count
     gameState.items = []; // Reset gameState.items
@@ -26,10 +30,16 @@ export function addItems(options = {}, scene) {
 
     for (let i = 0; i < itemCount; i++) {
         let x, y;
-        do {
-            x = Phaser.Math.Between(50, scene.scale.width - 50);
-            y = Phaser.Math.Between(50, scene.scale.height - 50);
-        } while (!isPositionValid(x, y, gameState.items, config.minDistance));
+
+        if (fixedCoordinates.length > 0) {
+            [x,y] = fixedCoordinates[i];
+        } else {
+            // generate random coordinates
+            do {
+                x = Phaser.Math.Between(50, scene.scale.width - 50);
+                y = Phaser.Math.Between(50, scene.scale.height - 50);
+            } while (!isPositionValid(x, y, gameState.items, config.minDistance));
+        }
 
         // Add the item to the scene
         const item = scene.add.image(x, y, assetKey).setInteractive();
