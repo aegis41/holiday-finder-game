@@ -17,7 +17,9 @@ export const gameConfig = {
         minCount: 3,         // Minimum items for random count
         maxCount: 10,        // Maximum items for random count
         minDistance: 100    // Minimum distance between items
-    }
+    },
+    pointsPer: 10,
+    highScoreCount: 3
 };
 
 

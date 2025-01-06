@@ -15,6 +15,20 @@ export function showGameOverScreen(scene) {
     const centerX = scene.scale.width / 2;
     let currentY = 50;
 
+    const graphics = scene.add.graphics();
+
+    // rectangle dimensions
+    const rectWidth = scene.scale.width * 0.8;
+    const rectHeight = scene.scale.height * 0.67;
+    const rectX = centerX - rectWidth / 2;
+    const rectY = currentY - 50 //start above the text
+
+    // Draw the rectangle
+    graphics.fillStyle(0x000000, 0.5); // Black with 50% opacity
+    graphics.fillRect(rectX, rectY, rectWidth, rectHeight);
+    graphics.lineStyle(2, 0xffffff, 1); // White border
+    graphics.strokeRect(rectX, rectY, rectWidth, rectHeight);
+
     // Add the "Game Over" text
     scene.add.text(centerX, currentY, 'Game Over!', {
         fontSize: '48px',

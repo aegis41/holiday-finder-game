@@ -1,3 +1,5 @@
+import { gameConfig } from "./gameConfig.js";
+
 /**
  * Checks if the given position is valid (not overlapping with existing items).
  *
@@ -48,7 +50,7 @@ export function saveHighScore(score) {
     const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
     highScores.push(score);
     highScores.sort((a, b) => b - a); // Sort in descending order
-    localStorage.setItem('highScores', JSON.stringify(highScores.slice(0, 5))); // Keep top 5 scores
+    localStorage.setItem('highScores', JSON.stringify(highScores.slice(0, gameConfig.highScoreCount))); // Keep top 5 scores
 }
 
 /**
@@ -58,5 +60,5 @@ export function saveHighScore(score) {
  * @returns {Array<number>} - An array of the top 5 high scores.
  */
 export function getHighScores() {
-    return JSON.parse(localStorage.getItem('highScores')) || [];
+    return JSON.parse(localStorage.getItem('highScores')).slice(0, gameConfig.highScoreCount) || [];
 }
