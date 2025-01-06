@@ -35,6 +35,7 @@ const gameState = {
  */
 function preload() {
     this.load.image('background', 'assets/images/background.png');
+    this.load.image('startscreen', 'assets/images/startscreen.png');
     this.load.image('xray', 'assets/images/xray.png');
     this.load.image('item', 'assets/images/item.png');
 }
@@ -106,9 +107,13 @@ function getHighScores() {
  * Displays the Start Screen with a title and Play button.
  */
 function showStartScreen(scene) {
-    scene.cameras.main.setBackgroundColor('#000'); // Black background
+    // add a background for the start screen
+    const bg = scene.add.image(0, 0, 'startscreen');
+    bg.setDisplaySize(scene.scale.width, scene.scale.height);
+    bg.setOrigin(0, 0); // align the background image to the top-left corner
+
     const centerX = scene.scale.width / 2;
-    const centerY = scene.scale.height / 2;
+    const centerY = scene.scale.height * 0.75;
 
     // Add title text
     scene.add.text(centerX, centerY - 100, 'Holiday Finder Game', {
