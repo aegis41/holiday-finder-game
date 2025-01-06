@@ -19,7 +19,7 @@ export function showGameOverScreen(scene) {
 
     // rectangle dimensions
     const rectWidth = scene.scale.width * 0.8;
-    const rectHeight = scene.scale.height * 0.67;
+    const rectHeight = scene.scale.height;
     const rectX = centerX - rectWidth / 2;
     const rectY = currentY - 50 //start above the text
 
