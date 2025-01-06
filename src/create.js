@@ -21,17 +21,7 @@ export function create() {
             .setOrigin(0, 0);
 
         // Add interactive items to the play screen
-        addItems(
-            {
-                count: -1,
-                random: true,
-                season: 'default',
-                minCount: 3,
-                maxCount: 10,
-                minDistance: 100
-            },
-            this
-        );
+        addItems({}, this);
 
         // Add and initialize the timer display
         gameState.timerText = this.add.text(10, 10, `Time: ${gameState.timer}s`, {
