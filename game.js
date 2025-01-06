@@ -23,7 +23,7 @@ const game = new Phaser.Game(config);
  * @property {Array<number>} highScores - Array of saved high scores.
  */
 const gameState = {
-    currentState: 'play',
+    currentState: 'start',
     score: 0,
     remainingItems: 0,
     items: [],
@@ -43,7 +43,9 @@ function preload() {
  * Creates the game scene, adding background and interactive objects.
  */
 function create() {
-    if (gameState.currentState === 'play') {
+    if (gameState.currentState === 'start') {
+        showStartScreen(this);
+    } else if (gameState.currentState === 'play') {
         const bg = this.add.image(0, 0, 'background');
         bg.setDisplaySize(this.scale.width, this.scale.height);
         bg.setOrigin(0, 0);
@@ -98,6 +100,47 @@ function saveHighScore(score) {
  */
 function getHighScores() {
     return JSON.parse(localStorage.getItem('highScores')) || [];
+}
+
+/**
+ * Displays the Start Screen with a title and Play button.
+ */
+function showStartScreen(scene) {
+    scene.cameras.main.setBackgroundColor('#000'); // Black background
+    const centerX = scene.scale.width / 2;
+    const centerY = scene.scale.height / 2;
+
+    // Add title text
+    scene.add.text(centerX, centerY - 100, 'Holiday Finder Game', {
+        fontSize: '48px',
+        fill: '#fff',
+        align: 'center'
+    }).setOrigin(0.5);
+
+    // Add Play button
+    const playButton = scene.add.text(centerX, centerY, 'Play', {
+        fontSize: '32px',
+        fill: '#0f0',
+        backgroundColor: '#333',
+        padding: { left: 10, right: 10, top: 5, bottom: 5 }
+    }).setOrigin(0.5).setInteractive();
+
+    // Handle button click
+    playButton.on('pointerdown', () => {
+        console.log('Play button clicked!');
+        gameState.currentState = 'play';
+        scene.scene.restart(); // Restart the scene to enter the play state
+    });
+}
+
+/**
+ * Handles the Game Over state.
+ */
+function handleGameOver(scene) {
+    console.log(`Game Over! Final Score: ${gameState.score}`);
+    saveHighScore(gameState.score);
+    gameState.currentState = 'gameover';
+    showGameOverScreen(scene);
 }
 
 /**
