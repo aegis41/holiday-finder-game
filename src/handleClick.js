@@ -1,3 +1,4 @@
+import { gameConfig } from './gameConfig.js';
 import { gameState } from './gameState.js';
 
 /**
@@ -15,10 +16,10 @@ export function handleClick(item, index) {
         // Check if this is the selected item
         if (index === gameState.selectedItemIdx) {
             console.log('Selected item clicked!');
-            gameState.score += 50; // Bonus points
+            gameState.score += gameConfig.pointsPer * gameConfig.bonusPtsModifier; // Bonus points
             item.setTint(0x00ff00); // Green tint for feedback
         } else {
-            gameState.score += 10; // Standard points
+            gameState.score += gameConfig.pointsPer; // Standard points
         }
 
         // Mark the item as found

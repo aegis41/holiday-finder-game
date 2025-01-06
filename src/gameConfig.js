@@ -9,6 +9,9 @@
  * @property {number} items.minCount - Minimum number of items for random count generation.
  * @property {number} items.maxCount - Maximum number of items for random count generation.
  * @property {number} items.minDistance - Minimum distance between items to avoid overlap.
+ * @property {number} pointsPer - Number of points awarded per click
+ * @property {number} highScoreCount - Number of high scores to save and display
+ * @property {number} bonusPtsModifier - Points multiplier for glowy clicks
  */
 export const gameConfig = {
     items: {
@@ -19,7 +22,8 @@ export const gameConfig = {
         minDistance: 100    // Minimum distance between items
     },
     pointsPer: 10,
-    highScoreCount: 3
+    highScoreCount: 3,
+    bonusPtsModifier: 5
 };
 
 
