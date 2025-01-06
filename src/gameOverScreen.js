@@ -13,7 +13,7 @@ export function showGameOverScreen(scene) {
     scene.cameras.main.setBackgroundColor('#000');
 
     const centerX = scene.scale.width / 2;
-    let currentY = 200;
+    let currentY = 50;
 
     // Add the "Game Over" text
     scene.add.text(centerX, currentY, 'Game Over!', {
@@ -64,11 +64,11 @@ export function showGameOverScreen(scene) {
 
     highScores.forEach((score, index) => {
         scene.add.text(centerX, currentY, `${index + 1}. ${score}`, {
-            fontSize: '24px',
+            fontSize: '18px',
             fill: '#fff',
             align: 'center'
         }).setOrigin(0.5);
-        currentY += 30;
+        currentY += 24;
     });
 
     // Add a "Play Again" button
