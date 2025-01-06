@@ -1,50 +1,55 @@
 import { gameState } from './gameState.js';
-import { showSparkle } from './sparkle.js';
 
 /**
  * Handles the interaction logic for a given game item.
  *
  * @function
  * @param {Phaser.GameObjects.Image} item - The interactive item to set up.
- * @param {number} order - The expected order of interaction for this item.
+ * @param {number} index - The index of the item in the gameState.items array.
  * @returns {void}
  */
-export function handleClick(item, order) {
+export function handleClick(item, index) {
     item.on('pointerdown', () => {
-        const gameItem = gameState.items.find((i) => i.gameObject === item);
+        console.log(`Item clicked at index: ${index}`);
+
+        // Check if this is the selected item
+        if (index === gameState.selectedItemIdx) {
+            console.log('Selected item clicked!');
+            gameState.score += 50; // Bonus points
+            item.setTint(0x00ff00); // Green tint for feedback
+        } else {
+            gameState.score += 10; // Standard points
+        }
+
+        // Mark the item as found
+        const gameItem = gameState.items[index];
         if (gameItem && !gameItem.found) {
-            gameItem.found = true; // Mark the item as found
-            gameItem.clickOrder = order; // Set the order in which it was clicked
+            gameItem.found = true;
             gameState.remainingItems -= 1;
 
-            // Check if clicked in the correct order
-            if (gameState.expectedOrder[gameState.timer - 1] === order) {
-                console.log('Correct Order!');
-                gameState.score += 20; // Double points for correct order
-            } else {
-                gameState.score += 10; // Standard points
+            // Update the score display
+            if (gameState.timerText) {
+                gameState.timerText.setText(`Score: ${gameState.score}`);
             }
+        }
 
-            // Check for a perfect game at the end
-            if (gameState.remainingItems === 0) {
-                const isPerfectGame = gameState.items.every(
-                    (item, idx) => item.clickOrder === gameState.expectedOrder[idx]
-                );
-                if (isPerfectGame) {
-                    console.log('Perfect Game!');
-                    gameState.score *= 3; // Triple the score
-                }
+        // Remove the item visually
+        item.destroy();
+
+        // Move selectedItemIdx to another unfound item
+        const unfoundItems = gameState.items
+            .map((item, idx) => ({ item, idx }))
+            .filter(({ item, idx }) => !item.found && idx !== index);
+
+        if (unfoundItems.length > 0) {
+            if (index === gameState.selectedItemIdx) {
+                const randomIndex = Phaser.Math.Between(0, unfoundItems.length - 1);
+                gameState.selectedItemIdx = unfoundItems[randomIndex].idx;
+                console.log(`New selected item index: ${gameState.selectedItemIdx}`);
             }
-
-            item.destroy(); // Remove the item visually
-            gameState.timerText.setText(`Score: ${gameState.score}`);
-
-            // Highlight the next correct item
-            if (gameState.remainingItems > 0) {
-                const nextIndex = gameState.expectedOrder[gameState.timer];
-                const nextCorrectItem = gameState.items.find((item, idx) => idx === nextIndex - 1 && !item.found);
-                showSparkle(this, nextCorrectItem);
-            }
+        } else {
+            gameState.selectedItemIdx = null; // No more items to select
+            console.log('No more items to select');
         }
     });
 }

@@ -16,12 +16,14 @@ export const gameConfig = {
         randomize: false,     // Randomize item placement
         minCount: 3,         // Minimum items for random count
         maxCount: 10,        // Maximum items for random count
-        minDistance: 100,    // Minimum distance between items
-        fixed: [
-            [125, 475],
-            [475, 475],
-            [125, 675],
-            [475, 675]
-        ]
+        minDistance: 100    // Minimum distance between items
     }
 };
+
+
+// fixed: [
+//     [125, 475],
+//     [475, 475],
+//     [125, 675],
+//     [475, 675]
+// ]

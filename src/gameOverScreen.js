@@ -32,17 +32,18 @@ export function showGameOverScreen(scene) {
     currentY += 50;
 
     // Check if it's a perfect game
-    const isPerfectGame = gameState.items.every(
-        (item, idx) => item.clickOrder === gameState.expectedOrder[idx]
-    );
-    if (isPerfectGame) {
-        scene.add.text(centerX, currentY, 'Perfect Game! 🎉', {
-            fontSize: '32px',
-            fill: '#ff0',
-            align: 'center'
-        }).setOrigin(0.5);
-        currentY += 50;
-    }
+    // TODO: Implement perfect game logic
+    // const isPerfectGame = gameState.items.every(
+    //     (item, idx) => item.clickOrder === gameState.expectedOrder[idx]
+    // );
+    // if (isPerfectGame) {
+    //     scene.add.text(centerX, currentY, 'Perfect Game! 🎉', {
+    //         fontSize: '32px',
+    //         fill: '#ff0',
+    //         align: 'center'
+    //     }).setOrigin(0.5);
+    //     currentY += 50;
+    // }
 
     // Show the elapsed time
     scene.add.text(centerX, currentY, `Elapsed Time: ${gameState.timer}s`, {

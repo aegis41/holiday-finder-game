@@ -47,12 +47,14 @@ export function addItems(options = {}, scene) {
         item.setOrigin(0.5, 0.5);
 
         // Attach interaction logic
-        handleClick(item, i + 1);
+        handleClick(item, i);
 
         // Store the item in the game state
         gameState.items.push({ gameObject: item, found: false, clickOrder: null });
     }
 
-    // Define the correct order for interaction
-    gameState.expectedOrder = [...Array(itemCount).keys()].map((i) => i + 1); // 1-based order
+    // set the selected item index
+    gameState.selectedItemIdx = Phaser.Math.Between(0, itemCount - 1);
+    console.log(`Selected Item Index: ${gameState.selectedItemIdx}`);
+
 }

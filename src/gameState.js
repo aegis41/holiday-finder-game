@@ -21,5 +21,6 @@ export const gameState = {
     timer: 0,             // Timer to track elapsed time
     timerEvent: null,     // Reference to the timer event
     items: [],            // Array of tappable game items
-    highScores: []        // Array to store high scores
+    highScores: [],       // Array to store high scores
+    selectedItemIdx: null // Index of the currently selected item
 };
