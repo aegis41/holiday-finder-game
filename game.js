@@ -28,6 +28,7 @@ const gameState = {
     score: 0,
     remainingItems: 0,
     timer: 0,
+    timerEvent: null,
     items: [],
     highScores: []
 };
@@ -66,7 +67,7 @@ function create() {
         );
 
         // display the stopwatch timer
-        gameState.timerText = this.add.text(10, 10, `Time ${gameState.timer}s`,{
+        gameState.timerText = this.add.text(10, 10, `Time: ${gameState.timer}s`,{
             fontSize: '24px',
             fill: '#fff'
         });
@@ -87,16 +88,6 @@ function update() {
 }
 
 /**
- * Handles the Game Over state.
- */
-function handleGameOver(scene) {
-    console.log(`Game Over! Final Score: ${gameState.score}`);
-    saveHighScore(gameState.score);
-    gameState.currentState = 'gameover';
-    showGameOverScreen(scene);
-}
-
-/**
  * Saves the current score to localStorage.
  */
 function saveHighScore(score) {
@@ -107,7 +98,8 @@ function saveHighScore(score) {
 }
 
 function startStopwatch(scene) {
-    scene.time.addEvent({
+    console.log('Timer started:', gameState.timerEvent);
+    gameState.timerEvent = scene.time.addEvent({
         delay: 1000, // 1000ms = 1 second
         callback: () => {
             gameState.timer += 1; // Increment elapsed time
@@ -165,6 +157,14 @@ function showStartScreen(scene) {
  */
 function handleGameOver(scene) {
     console.log(`Game Over! Final Score: ${gameState.score}`);
+    
+    // Stop the timer
+    if (gameState.timerEvent) {
+        console.log('Removing timer:', gameState.timerEvent); // Debug log
+        gameState.timerEvent.remove();
+        gameState.timerEvent = null;
+    }
+
     saveHighScore(gameState.score);
     gameState.currentState = 'gameover';
     showGameOverScreen(scene);
