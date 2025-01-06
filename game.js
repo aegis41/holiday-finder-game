@@ -19,6 +19,7 @@ const game = new Phaser.Game(config);
  * @property {string} currentState - The current state of the game ('start', 'play', or 'gameover').
  * @property {number} score - The current score of the player.
  * @property {number} remainingItems - The number of items left to find.
+ * @property {number} timer - The number of milliseconds passed.
  * @property {Array<object>} items - Array of tappable items in the scene.
  * @property {Array<number>} highScores - Array of saved high scores.
  */
@@ -26,6 +27,7 @@ const gameState = {
     currentState: 'start',
     score: 0,
     remainingItems: 0,
+    timer: 0,
     items: [],
     highScores: []
 };
@@ -55,13 +57,21 @@ function create() {
             {
                 count: -1,
                 random: true,
-                season: 'valentine',
+                season: 'default',
                 minCount: 3,
                 maxCount: 10,
                 minDistance: 100
             },
             this
         );
+
+        // display the stopwatch timer
+        gameState.timerText = this.add.text(10, 10, `Time ${gameState.timer}s`,{
+            fontSize: '24px',
+            fill: '#fff'
+        });
+
+        startStopwatch(this);
     } else if (gameState.currentState === 'gameover') {
         showGameOverScreen(this);
     }
@@ -95,6 +105,18 @@ function saveHighScore(score) {
     highScores.sort((a, b) => b - a);
     localStorage.setItem('highScores', JSON.stringify(highScores.slice(0, 5)));
 }
+
+function startStopwatch(scene) {
+    scene.time.addEvent({
+        delay: 1000, // 1000ms = 1 second
+        callback: () => {
+            gameState.timer += 1; // Increment elapsed time
+            gameState.timerText.setText(`Time: ${gameState.timer}s`); // Update timer display
+        },
+        loop: true // Keep running every second
+    });
+}
+
 
 /**
  * Retrieves the high scores from localStorage.
@@ -170,8 +192,16 @@ function showGameOverScreen(scene) {
             align: 'center'
         }).setOrigin(0.5);
         currentY += 100;
-    }
 
+        // Show elapsed time
+        scene.add.text(centerX, currentY, `Elapsed Time: ${gameState.timer}s`, {
+            fontSize: '32px',
+            fill: '#fff',
+            align: 'center'
+        }).setOrigin(0.5);
+        currentY += 100;        
+    }
+    
     const highScores = getHighScores();
     scene.add.text(centerX, currentY, 'High Scores:', {
         fontSize: '36px',
@@ -199,6 +229,7 @@ function showGameOverScreen(scene) {
     restartButton.on('pointerdown', () => {
         gameState.currentState = 'play';
         gameState.score = 0;
+        gameState.timer = 0;
         gameState.remainingItems = 0;
         gameState.items = [];
         scene.scene.restart();
