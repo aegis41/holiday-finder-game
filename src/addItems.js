@@ -8,7 +8,6 @@ import { gameConfig } from './gameConfig.js';
  *
  * @function
  * @param {object} [options] - Configuration options for item creation. Overrides defaults in gameConfig.
- * @param {Array<string>} options.words - Array of words to associate with items
  * @param {Phaser.Scene} scene - The Phaser scene where items will be added.
  * @returns {void}
  */
@@ -16,12 +15,9 @@ export function addItems(options = {}, scene) {
     // Merge provided options with defaults from gameConfig
     const config = { ...gameConfig.items, ...options };
 
-    const words = config.words || [];
-    const itemCount = words.length'
-
     // use coordinates if provided, otherwise calculate item count
     const fixedCoordinates = config.fixed || [];
-    itemCount = fixedCoordinates.length > 0
+    const itemCount = fixedCoordinates.length > 0
         ? fixedCoordinates.length
         : (config.defaultCount === -1
             ? Phaser.Math.Between(config.minCount, config.maxCount)
@@ -33,7 +29,6 @@ export function addItems(options = {}, scene) {
     const assetKey = getSeasonalAsset(config.season || 'default');
 
     for (let i = 0; i < itemCount; i++) {
-        let wordText = "";
         let x, y;
 
         if (fixedCoordinates.length > 0) {
@@ -51,18 +46,8 @@ export function addItems(options = {}, scene) {
         item.setDisplaySize(100, 100);
         item.setOrigin(0.5, 0.5);
 
-        // Add the hidden word as text
-        if (options.words.length > 0) {
-            wordText = scene.add.wordText(x, y, words[i], {
-                fontSize: '20px',
-                fill: '#fff',
-                align: 'center'
-            }).setOrigin(0.5);
-            wordText.setVisible(false);
-        }
-
         // Attach interaction logic
-        handleClick(item, i, wordText);
+        handleClick(item, i);
 
         // Store the item in the game state
         gameState.items.push({ gameObject: item, found: false, clickOrder: null });
