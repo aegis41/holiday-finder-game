@@ -15,17 +15,17 @@
  */
 export const gameConfig = {
     items: {
-        defaultCount: -1,                                   // Use -1 for random count
+        defaultCount: 5,                                   // Use -1 for random count
         minCount: 10,                                       // Minimum items for random count
         maxCount: 20,                                       // Maximum items for random count
         minDistance: 100,                                   // Minimum distance between items
-        tokenString: "I Love Token Strings And You!",       // For string games
-        fixed: [                                            // Fixed coordinates
-            [125, 475],
-            [475, 475],
-            [125, 675],
-            [475, 675]
-        ]
+        // tokenString: "I Love You!",                         // For string games
+        // fixed: [                                            // Fixed coordinates
+        //     [125, 475],
+        //     [475, 475],
+        //     [125, 675],
+        //     [475, 675]
+        // ]
     },
     pointsPer: 10,
     highScoreCount: 3,
