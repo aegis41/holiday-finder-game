@@ -17,8 +17,8 @@ export const gameConfig = {
     items: {
         defaultCount: -1,    // Use -1 for random count
         randomize: false,     // Randomize item placement
-        minCount: 3,         // Minimum items for random count
-        maxCount: 10,        // Maximum items for random count
+        minCount: 10,         // Minimum items for random count
+        maxCount: 20,        // Maximum items for random count
         minDistance: 100    // Minimum distance between items
     },
     pointsPer: 10,

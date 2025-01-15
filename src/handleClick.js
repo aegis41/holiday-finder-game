@@ -9,8 +9,9 @@ import { gameState } from './gameState.js';
  * @param {number} index - The index of the item in the gameState.items array.
  * @returns {void}
  */
-export function handleClick(item, index) {
+export function handleClick(item, index, wordText="") {
     item.on('pointerdown', () => {
+        console.log(wordText);
         console.log(`Item clicked at index: ${index}`);
 
         // Check if this is the selected item
