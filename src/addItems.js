@@ -30,43 +30,44 @@ export function addItems(options = {}, scene) {
         itemsToGenerate = config.fixed.map(([x, y]) => ({ x, y }));
         console.log(`Generated items from fixed coordinates:`, itemsToGenerate);
 
-    // Priority 3: Default Count
-    } else if (config.defaultCount !== -1) {
-        itemsToGenerate = new Array(config.defaultCount).fill({dummy:"text"});
-        console.log(`Generated default count items:`, itemsToGenerate);
+    // Prioritt 3 and 4: Default or Random Count (both generate random coords)
+    } else {
+        const count =  config.defaultCount !== -1
+            ? config.defaultCount
+            : Phaser.Math.Between(config.minCount, config.maxCount);
 
-    // Priority 4: Random Count
-    } else if (config.defaultCount === -1 && config.minCount && config.maxCount) {
-        const randomCount = Phaser.Math.Between(config.minCount, config.maxCount);
-        itemsToGenerate = new Array(randomCount).fill({dummy:"text"});
-        console.log(`Generated random count items:`, itemsToGenerate);
+        for (let i = 0; i < count; i++) {
+            const x = Phaser.Math.Between(50, scene.scale.width - 50);
+            const y = Phaser.Math.Between(50, scene.scale.height - 50);
+            itemsToGenerate.push({x, y});
+        }
     }
+    // Priority 3: Default Count
+    // } else if (config.defaultCount !== -1) {
+    //     itemsToGenerate = new Array(config.defaultCount).fill({dummy:"text"});
+    //     console.log(`Generated default count items:`, itemsToGenerate);
+
+    // // Priority 4: Random Count
+    // } else if (config.defaultCount === -1 && config.minCount && config.maxCount) {
+    //     const randomCount = Phaser.Math.Between(config.minCount, config.maxCount);
+    //     itemsToGenerate = new Array(randomCount).fill({dummy:"text"});
+    //     console.log(`Generated random count items:`, itemsToGenerate);
+    // }
 
     gameState.remainingItems = itemsToGenerate.length;
     gameState.items = [];
 
+    // Generate items using the precomputed coordinates or words
     itemsToGenerate.forEach((data, i) => {
-        let x, y;
-
-        // For fixed coordinates, use provided x, y
-        if (data.x !== undefined && data.y !== undefined) {
-            ({ x, y } = data);
-
-        // For random placement
-        } else {
-            do {
-                x = Phaser.Math.Between(50, scene.scale.width - 50);
-                y = Phaser.Math.Between(50, scene.scale.height - 50);
-            } while (!isPositionValid(x, y, gameState.items, config.minDistance));
-        }
+        const { x, y, word } = data;
 
         // Add the item to the scene
         const item = scene.add.image(x, y, getSeasonalAsset('default')).setInteractive();
         item.setDisplaySize(100, 100).setOrigin(0.5, 0.5);
 
         // For tokenized strings, associate the word with the item
-        if (data.word) {
-            const wordText = scene.add.text(x, y, data.word, {
+        if (word) {
+            const wordText = scene.add.text(x, y, word, {
                 fontSize: '16px',
                 fill: '#fff',
                 align: 'center'
