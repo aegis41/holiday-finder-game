@@ -29,6 +29,14 @@ export function showGameOverScreen(scene) {
     graphics.lineStyle(2, 0xffffff, 1); // White border
     graphics.strokeRect(rectX, rectY, rectWidth, rectHeight);
 
+    // Add the "I LOVE YOU" text
+    scene.add.text(centerX, currentY, 'I LOVE YOU!', {
+        fontSize: '48px',
+        fill: '#fff',
+        align: 'center'
+    }).setOrigin(0.5);
+    currentY += 100;
+
     // Add the "Game Over" text
     scene.add.text(centerX, currentY, 'Game Over!', {
         fontSize: '48px',

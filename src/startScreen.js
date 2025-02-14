@@ -19,8 +19,9 @@ export function showStartScreen(scene) {
     // Add the game title
     scene.add.text(centerX, centerY - 100, 'Holiday Finder Game', {
         fontSize: '48px',
-        fill: '#fff',
-        align: 'center'
+        fill: '#000',
+        align: 'center',
+        backgroundColor: '#fff'
     }).setOrigin(0.5);
 
     // Add the play button
